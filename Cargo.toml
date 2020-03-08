@@ -1,0 +1,33 @@
+[package]
+name = "poc-kafka-consumer"
+version = "0.1.0"
+authors = ["Jon Catlin <jonc@destini.com>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+bytes = "0.5.2"
+json = "0.12.1"
+log = "0.4.8"
+env_logger = "0.7.1"
+chrono = "0.4.10"
+serde = "1.0.104"
+serde_json = "1.0.48"
+serde_derive = "1.0.104"
+rdkafka = { version = "0.23", features = ["cmake-build"] }
+clap = "2.18.0"
+futures = "0.3.0"
+tokio = { version = "0.2", features = ["blocking", "macros", "rt-core", "time"] }
+
+
+
+
+
+
+
+# Here's an example of a TOML "array of tables" section, in this case specifying
+# a binary target name and path.
+[[bin]]
+name = "poc-kafka-consumer"
+path = "src/main.rs"
