@@ -135,5 +135,7 @@ async fn main() {
     let brokers = matches.value_of("brokers").unwrap();
     let group_id = matches.value_of("group-id").unwrap();
 
-    consume_and_print(brokers, group_id, &topics).await
+    println!("Type of matches.values_of() is {:?}", topics = matches.values_of("topics").unwrap());
+
+//    consume_and_print(brokers, group_id, &topics).await
 }

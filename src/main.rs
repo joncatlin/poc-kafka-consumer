@@ -41,7 +41,7 @@ impl ConsumerContext for CustomContext {
 // A type alias with your custom consumer can be created for convenience.
 type LoggingConsumer = StreamConsumer<CustomContext>;
 
-async fn consume_and_print(brokers: &str, group_id: &str, topics: Vec<&str>) {
+async fn consume_and_print(brokers: &str, group_id: &str, topics: &[&str]) {
 // async fn consume_and_print(brokers: &str, group_id: &str, topics: &[&str]) {
         info!("brokers={}, group_id={}, topic={:?}", brokers, group_id, topics);
     let context = CustomContext;
@@ -60,7 +60,7 @@ async fn consume_and_print(brokers: &str, group_id: &str, topics: Vec<&str>) {
 
     consumer
 //    .subscribe(&topics.to_vec())
-        .subscribe(&topics)
+        .subscribe(&topics.to_vec())
         .expect("Can't subscribe to specified topics");
 
     // consumer.start() returns a stream. The stream can be used ot chain together expensive steps,
@@ -131,7 +131,7 @@ async fn main() {
     //     )
     //     .get_matches();
 
-//    setup_logger(true, matches.value_of("log-conf"));
+    // setup_logger(true, matches.value_of("log-conf"));
     let none: Option<&str> = None;
     setup_logger(true, none);
 
@@ -142,21 +142,30 @@ async fn main() {
     // let brokers = matches.value_of("brokers").unwrap();
     // let group_id = matches.value_of("group-id").unwrap();
 
+    // println!("type of={:?}", matches.values_of("topics").unwrap());
+
+
+    // println!("type of topics = {:?}", topics);
+
+    // let jon = ["events"];
+    // println!("type of jon = {:?}", jon);
+
     let brokers = env::var("KAFKA_BOOTSTRAP_SERVERS").expect("Missing environment variable KAFKA_BOOTSTRAP_SERVERS. Cannot continue without it.");
     let topic = env::var("KAFKA_TOPIC").expect("Missing environment variable KAFKA_TOPIC. Cannot continue without it.");
     let group_id = env::var("KAFKA_GROUP_ID").expect("Missing environment variable KAFKA_GROUP_ID. Cannot continue without it.");
 
     // let brokers = env::var("KAFKA_BOOTSTRAP_SERVERS").unwrap();
-    // let topic = env::var("KAFKA_TOPIC").unwrap();
+    // let topic_env = env::var("KAFKA_TOPIC").unwrap();
     // let group_id = env::var("KAFKA_GROUP_ID").unwrap();
+    let topics = [&*topic];
+    println!("type of topics = {:?}", topics);
 
-
-    let topics: Vec<&str> = vec!(&*topic);
+//    let topics: Vec<&str> = vec!(&*topic);
 //    v.push(&*topic);
 
 //    println!("topics={:?}", v);
     // let topics = vec![&*topic];
 
 
-    consume_and_print(&brokers, &group_id, topics).await
+    consume_and_print(&brokers, &group_id, &topics).await
 }
